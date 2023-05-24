@@ -15,6 +15,7 @@ public class GameManagerScript : MonoBehaviour
         int unko = 0;
         int ataoka = 0;
         int ahomi = 4;
+        int sakiren = 5;
     }
 
     // Update is called once per frame
