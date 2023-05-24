@@ -10,6 +10,9 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         hoge = 4;
+        int kyougou = 0;
+        kyougou = 2; 
+
     }
 
     // Update is called once per frame
