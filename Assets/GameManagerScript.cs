@@ -8,7 +8,8 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         int kyougou = 0;
-        kyougou = 2; 
+        kyougou = 2;
+        int ataoka = 0;
 
     }
 
