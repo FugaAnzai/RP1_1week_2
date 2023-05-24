@@ -28,52 +28,7 @@ public class GameManagerScript : MonoBehaviour
     {
         MoveCamera();
 
-        //ステージセレクト右へ移動
-        if (Input.GetKeyDown(KeyCode.D) && !isMoveCamera_)
-        {
-            //カメラ移動フラグをtrueに
-            isMoveCamera_ = true;
-            //ステージセレクト加算
-            stageSelect++;
-            //MoveCameraのstartとendを設定
-            SetMoveCamera(mainCamera_.transform.position, mainCamera_.transform.position + new Vector3(4, 0, 0));
-        }
-
-        //ステージセレクト左へ移動
-        if (Input.GetKeyDown(KeyCode.A) && !isMoveCamera_ && stageSelect > 1)
-        {
-            //カメラ移動フラグをtrueに
-            isMoveCamera_ = true;
-            //ステージセレクト減算
-            stageSelect--;
-            //MoveCameraのstartとendを設定
-            SetMoveCamera(mainCamera_.transform.position, mainCamera_.transform.position + new Vector3(-4, 0, 0));
-        }
-
-        //1以下にならないように
-        if(stageSelect <= 1)
-        {
-            stageSelect = 1;
-        }
-
-        //スペースが押されたらシーン遷移
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if(stageSelect == 1)
-            {
-                SceneManager.LoadScene("Stage1");
-            }
-
-            if (stageSelect == 2)
-            {
-                SceneManager.LoadScene("Stage2");
-            }
-
-            if (stageSelect == 3)
-            {
-                SceneManager.LoadScene("Stage3");
-            }
-        }
+        SelectStage();
 
     }
 
@@ -107,6 +62,56 @@ public class GameManagerScript : MonoBehaviour
     {
         startCamera_ = startCamera;
         endCamera_ = endCamera;
+    }
+
+    private void SelectStage()
+    {
+        //ステージセレクト右へ移動
+        if (Input.GetKeyDown(KeyCode.D) && !isMoveCamera_)
+        {
+            //カメラ移動フラグをtrueに
+            isMoveCamera_ = true;
+            //ステージセレクト加算
+            stageSelect++;
+            //MoveCameraのstartとendを設定
+            SetMoveCamera(mainCamera_.transform.position, mainCamera_.transform.position + new Vector3(4, 0, 0));
+        }
+
+        //ステージセレクト左へ移動
+        if (Input.GetKeyDown(KeyCode.A) && !isMoveCamera_ && stageSelect > 1)
+        {
+            //カメラ移動フラグをtrueに
+            isMoveCamera_ = true;
+            //ステージセレクト減算
+            stageSelect--;
+            //MoveCameraのstartとendを設定
+            SetMoveCamera(mainCamera_.transform.position, mainCamera_.transform.position + new Vector3(-4, 0, 0));
+        }
+
+        //1以下にならないように
+        if (stageSelect <= 1)
+        {
+            stageSelect = 1;
+        }
+
+        //スペースが押されたらシーン遷移
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (stageSelect == 1)
+            {
+                SceneManager.LoadScene("Stage1");
+            }
+
+            if (stageSelect == 2)
+            {
+                SceneManager.LoadScene("Stage2");
+            }
+
+            if (stageSelect == 3)
+            {
+                SceneManager.LoadScene("Stage3");
+            }
+        }
     }
 
 }
