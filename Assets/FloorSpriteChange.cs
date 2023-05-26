@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerSpriteChange : MonoBehaviour
+public class FloorSpriteChange : MonoBehaviour
 {
-
     //電源オフ
     public Sprite offImage;
     //電源オン
@@ -13,17 +12,13 @@ public class PowerSpriteChange : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     private bool isChange_ = false;
-    public bool isChangeFrame_ = false;
-    public bool isChangeClear_ = false;
-    public int priority_ = 100;
+    private bool isChangeReady_ = false;
 
     // Start is called before the first frame update
     void Start()
     {
         isChange_ = false;
-        isChangeFrame_ = false;
-        isChangeClear_ = false;
-        priority_ = 100;
+        isChangeReady_ = false;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -38,9 +33,14 @@ public class PowerSpriteChange : MonoBehaviour
         return isChange_;
     }
 
-    public void SetIsChange(bool isChange)
+    public void SetIsChange()
     {
-        isChange_ = isChange;
+        isChange_ = isChangeReady_;
+    }
+
+    public void SetIsChangeReady(bool isChangeReady)
+    {
+        isChangeReady_ = isChangeReady;
     }
 
     void ChangeSprite()
@@ -55,5 +55,4 @@ public class PowerSpriteChange : MonoBehaviour
             spriteRenderer.sprite = onImage;
         }
     }
-
 }
