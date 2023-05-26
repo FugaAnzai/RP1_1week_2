@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class GameManagerScript : MonoBehaviour
+public class MainManagerScript : MonoBehaviour
 {
 
     //カメラのゲームオブジェクト
@@ -29,14 +29,12 @@ public class GameManagerScript : MonoBehaviour
         MoveCamera();
 
         SelectStage();
-
     }
 
-    //カメラの移動処理
     private void MoveCamera()
     {
         //フラグをtrueにすると移動開始
-        if(isMoveCamera_)
+        if (isMoveCamera_)
         {
             //t加算
             cameraT_ += 0.01f;
