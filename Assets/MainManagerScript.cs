@@ -20,7 +20,7 @@ public class MainManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -29,6 +29,11 @@ public class MainManagerScript : MonoBehaviour
         MoveCamera();
 
         SelectStage();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("TitleScene");
+        }
     }
 
     private void MoveCamera()

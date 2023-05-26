@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -33,6 +34,12 @@ public class StageManager : MonoBehaviour
     void Update()
     {
         PlayerMove();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+
     }
 
     public void LoadTileData()
@@ -129,6 +136,18 @@ public class StageManager : MonoBehaviour
             Vector2Int playerIndex = GetPlayerIndex();
             Vector2Int move = new(1, 0);
 
+            for (int y = 0; y < field.GetLength(0); y++)
+            {
+
+                for (int x = 0; x < field.GetLength(1); x++)
+                {
+                    if (field[y, x] != null && field[y, x].tag == "Player")
+                    {
+                        field[y, x].GetComponent<SpriteRenderer>().flipX = false;
+                    }
+                }
+            }
+
             MoveObject("Player", playerIndex, playerIndex + move);
 
         }
@@ -139,6 +158,18 @@ public class StageManager : MonoBehaviour
             Vector2Int playerIndex = GetPlayerIndex();
 
             Vector2Int move = new(1, 0);
+
+            for (int y = 0; y < field.GetLength(0); y++)
+            {
+
+                for (int x = 0; x < field.GetLength(1); x++)
+                {
+                    if (field[y, x] != null && field[y, x].tag == "Player")
+                    {
+                        field[y,x].GetComponent<SpriteRenderer>().flipX = true;
+                    }
+                }
+            }
 
             MoveObject("Player", playerIndex, playerIndex - move);
 

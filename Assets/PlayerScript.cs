@@ -19,9 +19,4 @@ public class PlayerScript : MonoBehaviour
 
     }
 
-    public void Move(Vector2Int moveFrom,Vector2Int moveTo)
-    {
-        this.transform.position = new Vector3(moveFrom.x, moveFrom.y, 0) + new Vector3(moveTo.x, moveTo.y, 0);
-    }
-
 }
