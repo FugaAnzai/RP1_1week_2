@@ -553,6 +553,10 @@ public class StageManager : MonoBehaviour
 
     private bool CheckBetween(int x, int y)
     {
+        if (field[y, x] != null && field[y, x].tag == "Wall")
+        {
+            return true;
+        }
         if (field[y, x] != null && field[y, x].tag == "Floor" && field[y, x].GetComponent<FloorSpriteChange>().GetIsChange())
         {
             return true;
