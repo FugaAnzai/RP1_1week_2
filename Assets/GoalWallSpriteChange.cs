@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerSpriteChange : MonoBehaviour
+public class GoalWallSpriteChange : MonoBehaviour
 {
-
     //電源オフ
     public Sprite offImage;
     //電源オン
@@ -12,18 +11,12 @@ public class PowerSpriteChange : MonoBehaviour
     //spriteRenderer
     SpriteRenderer spriteRenderer;
 
-    private bool isChange_ = false;
-    public bool isChangeFrame_ = false;
-    public bool isChangeClear_ = false;
-    public int number_ = 0;
+    private bool isChange_ = true;
 
     // Start is called before the first frame update
     void Start()
     {
-        isChange_ = false;
-        isChangeFrame_ = false;
-        isChangeClear_ = false;
-        number_ = 100;
+        isChange_ = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -55,5 +48,4 @@ public class PowerSpriteChange : MonoBehaviour
             spriteRenderer.sprite = onImage;
         }
     }
-
 }

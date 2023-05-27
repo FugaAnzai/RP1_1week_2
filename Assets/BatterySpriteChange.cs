@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerSpriteChange : MonoBehaviour
+public class BatterySpriteChange : MonoBehaviour
 {
-
     //電源オフ
     public Sprite offImage;
     //電源オン
@@ -13,17 +12,15 @@ public class PowerSpriteChange : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     private bool isChange_ = false;
-    public bool isChangeFrame_ = false;
-    public bool isChangeClear_ = false;
+    private bool isChangeReady_ = false;
     public int number_ = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         isChange_ = false;
-        isChangeFrame_ = false;
-        isChangeClear_ = false;
-        number_ = 100;
+        isChangeReady_ = false;
+        number_ = 0;
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -38,9 +35,14 @@ public class PowerSpriteChange : MonoBehaviour
         return isChange_;
     }
 
-    public void SetIsChange(bool isChange)
+    public void SetIsChange()
     {
-        isChange_ = isChange;
+        isChange_ = isChangeReady_;
+    }
+
+    public void SetIsChangeReady(bool isChangeReady)
+    {
+        isChangeReady_ = isChangeReady;
     }
 
     void ChangeSprite()
@@ -55,5 +57,4 @@ public class PowerSpriteChange : MonoBehaviour
             spriteRenderer.sprite = onImage;
         }
     }
-
 }

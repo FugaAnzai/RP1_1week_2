@@ -7,6 +7,9 @@ TagManager:
   - Wall
   - Power
   - Floor
+  - Battery
+  - GoalWall
+  - Goal
   layers:
   - Default
   - TransparentFX

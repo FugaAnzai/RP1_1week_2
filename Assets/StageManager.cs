@@ -15,7 +15,10 @@ public class StageManager : MonoBehaviour
         FLOOR,
         PLAYER,
         WALL,
-        POWER
+        POWER,
+        BATTERY,
+        GOAL,
+        GOALWALL
     }
 
     TILE_TYPE[,] tileTable;
@@ -27,17 +30,20 @@ public class StageManager : MonoBehaviour
     public GameObject playerPrafab_;
     public GameObject wallPrafab_;
     public GameObject powerPrefab_;
+    public GameObject batteryPrefab_;
+    public GameObject goalPrefab_;
+    public GameObject goalwallPrefab_;
     public TextAsset stageFile;
     public TextAsset stagePlayerFile;
 
     private bool isChangePower_ = false;
-    private int powerPriority_ = 0;
+    private int powerNumber_ = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         isChangePower_ = false;
-        powerPriority_ = 0;
+        powerNumber_ = 0;
         LoadTileData();
         CreateStage();
     }
@@ -61,7 +67,12 @@ public class StageManager : MonoBehaviour
 
         PlayerMove();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // ゴール判定
+        CheckBattery();
+
+        // ESC || ゴールしたら
+        Vector2Int playerIndex = GetPlayerIndex();
+        if (Input.GetKeyDown(KeyCode.Escape) || field[playerIndex.y, playerIndex.x].tag == "Goal")
         {
             SceneManager.LoadScene("MainScene");
         }
@@ -129,7 +140,21 @@ public class StageManager : MonoBehaviour
                 if (tileTable[y,x] == TILE_TYPE.POWER)
                 {
                     field[y, x] = Instantiate(powerPrefab_, new Vector3(x, tileTable.GetLength(0) - y, 0), Quaternion.identity);
+                }
 
+                if (tileTable[y, x] == TILE_TYPE.BATTERY)
+                {
+                    field[y, x] = Instantiate(batteryPrefab_, new Vector3(x, tileTable.GetLength(0) - y, 0), Quaternion.identity);
+                }
+
+                if (tileTable[y, x] == TILE_TYPE.GOAL)
+                {
+                    field[y, x] = Instantiate(goalPrefab_, new Vector3(x, tileTable.GetLength(0) - y, 0), Quaternion.identity);
+                }
+
+                if (tileTable[y, x] == TILE_TYPE.GOALWALL)
+                {
+                    field[y, x] = Instantiate(goalwallPrefab_, new Vector3(x, tileTable.GetLength(0) - y, 0), Quaternion.identity);
                 }
             }
         }
@@ -168,7 +193,13 @@ public class StageManager : MonoBehaviour
 
     bool MoveObject(string tag, Vector2Int moveFrom, Vector2Int moveTo)
     {
-        if (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Wall" || field[moveTo.y, moveTo.x].tag == "Power"))
+        if ((field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Wall" || field[moveTo.y, moveTo.x].tag == "Power")) ||
+            // 通電床が移動先にあったら移動不可
+            (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Floor" && field[moveTo.y, moveTo.x].GetComponent<FloorSpriteChange>().GetIsChange())) ||
+            // 通電電池が移動先にあったら移動不可
+            (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Battery" && field[moveTo.y, moveTo.x].GetComponent<BatterySpriteChange>().GetIsChange())) ||
+            // ゴール周り壁があったら移動不可
+            (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "GoalWall" && field[moveTo.y, moveTo.x].GetComponent<GoalWallSpriteChange>().GetIsChange())))
         {
             Debug.Log("Failed");
             return false;
@@ -320,15 +351,11 @@ public class StageManager : MonoBehaviour
         field[vector2.y, vector2.x].GetComponent<PowerSpriteChange>().isChangeClear_ = true;
         isChangePower_ = true;
 
-        // 優先順位をつける
+        // 番号をつける
         if (field[vector2.y, vector2.x].GetComponent<PowerSpriteChange>().isChangeFrame_)
         {
-            powerPriority_ += 1;
-            field[vector2.y, vector2.x].GetComponent<PowerSpriteChange>().priority_ = powerPriority_;
-        }
-        else
-        {
-            powerPriority_ -= 1;
+            powerNumber_ += 1;
+            field[vector2.y, vector2.x].GetComponent<PowerSpriteChange>().number_ = powerNumber_;
         }
 
     }
@@ -336,12 +363,11 @@ public class StageManager : MonoBehaviour
     // 床の通電処理
     void FloorElectrification()
     {
-
         for (int y1 = 0; y1 < field.GetLength(0); y1++)
         {
             for (int x1 = 0; x1 < field.GetLength(1); x1++)
             {
-                if (field[y1, x1] != null && field[y1, x1].tag == "Floor")
+                if (field[y1, x1] != null && (field[y1, x1].tag == "Floor" || field[y1, x1].tag == "Battery"))
                 {
                     // 通電したかフラグ
                     bool isElectrification = false;
@@ -352,71 +378,69 @@ public class StageManager : MonoBehaviour
                         // 同じX軸にあり、電源が入っているなら通電する
                         if (field[y2, x1] != null && field[y2, x1].tag == "Power" && field[y2, x1].GetComponent<PowerSpriteChange>().isChangeFrame_)
                         {
-                            // 電源と対象の床の間に既に通電している床があるなら、通電しない
+                            // 電源と対象の床の間に（既に通電している床 || 電源 || プレイヤー）があるなら通電しない
                             // 向きの取得
                             int tmpVertical = y1 - y2;
 
                             // 間に通電済みがあったかフラグ
-                            bool isExisting = false;
+                            bool isExisting_ = false;
 
                             // 電源の上方向にある場合で、間に通電済みがあるか判定
-                            if (!isExisting && tmpVertical < 0 && y2 > 0)
+                            if (!isExisting_ && tmpVertical < 0 && y2 > 0)
                             {
-                                for (int y3 = (y2 - 1); y3 > y1; y3--)
+                                for (int y3 = (y2 - 1); y3 >= y1; y3--)
                                 {
-                                    if (field[y3, x1] != null && field[y3, x1].tag == "Floor" && field[y3, x1].GetComponent<FloorSpriteChange>().GetIsChange())
+                                    if (CheckBetween(x1, y3))
                                     {
-                                        isExisting = true;
+                                        isExisting_ = true;
                                         break;
                                     }
                                 }
                             }
                             // 電源の下方向にある場合で、間に通電済みがあるか判定
-                            if (!isExisting && tmpVertical > 0 && y2 < field.GetLength(0))
+                            if (!isExisting_ && tmpVertical > 0 && y2 < field.GetLength(0))
                             {
-                                for (int y3 = (y2 + 1); y3 < y1; y3++)
+                                for (int y3 = (y2 + 1); y3 <= y1; y3++)
                                 {
-                                    if (field[y3, x1] != null && field[y3, x1].tag == "Floor" && field[y3, x1].GetComponent<FloorSpriteChange>().GetIsChange())
+                                    if (CheckBetween(x1, y3))
                                     {
-                                        isExisting = true;
+                                        isExisting_ = true;
                                         break;
                                     }
                                 }
                             }
 
                             // 間に通電済みがあったらループを抜ける
-                            if (isExisting)
+                            if (isExisting_)
                             {
                                 break;
                             }
 
-                            field[y1, x1].GetComponent<FloorSpriteChange>().SetIsChangeReady(true);
+                            if (field[y1, x1].tag == "Floor")
+                            {
+                                field[y1, x1].GetComponent<FloorSpriteChange>().SetIsChangeReady(true);
+                                field[y1, x1].GetComponent<FloorSpriteChange>().number_ = field[y2, x1].GetComponent<PowerSpriteChange>().number_;
+                            }
+                            if (field[y1, x1].tag == "Battery")
+                            {
+                                field[y1, x1].GetComponent<BatterySpriteChange>().SetIsChangeReady(true);
+                                field[y1, x1].GetComponent<BatterySpriteChange>().number_ = field[y2, x1].GetComponent<PowerSpriteChange>().number_;
+                            }
                             isElectrification = true;
                             break;
                         }
 
                         // 通電していないならただの床にする
-                        else if (!isElectrification && field[y1, x1].GetComponent<FloorSpriteChange>().GetIsChange() && field[y2, x1] != null && field[y2, x1].tag == "Power" && !field[y2, x1].GetComponent<PowerSpriteChange>().isChangeFrame_ && field[y2, x1].GetComponent<PowerSpriteChange>().isChangeClear_)
+                        else if (!isElectrification && ((field[y1, x1].tag == "Floor" && field[y1, x1].GetComponent<FloorSpriteChange>().GetIsChange()) || (field[y1, x1].tag == "Battery" && field[y1, x1].GetComponent<BatterySpriteChange>().GetIsChange())) && field[y2, x1] != null && field[y2, x1].tag == "Power" && !field[y2, x1].GetComponent<PowerSpriteChange>().isChangeFrame_ && field[y2, x1].GetComponent<PowerSpriteChange>().isChangeClear_)
                         {
-                            // 対象の床のX座標に電源の入ったスイッチがないかフラグ
-                            bool isCheck = false;
-
-                            for (int x3 = 0; x3 < field.GetLength(1); x3++)
-                            {
-                                if (field[y1, x3] != null && field[y1, x3].tag == "Power" && field[y1, x3].GetComponent<PowerSpriteChange>().GetIsChange())
-                                {
-                                    // 優先順位の判定
-                                    if (field[y1, x3].GetComponent<PowerSpriteChange>().priority_ < field[y2, x1].GetComponent<PowerSpriteChange>().priority_)
-                                    {
-                                        isCheck = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (!isCheck)
+                            // 消した電源と同じ番号を持つ床を消す
+                            if (field[y1, x1].tag == "Floor" && field[y1, x1].GetComponent<FloorSpriteChange>().number_ == field[y2, x1].GetComponent<PowerSpriteChange>().number_)
                             {
                                 field[y1, x1].GetComponent<FloorSpriteChange>().SetIsChangeReady(false);
+                            }
+                            if (field[y1, x1].tag == "Battery" && field[y1, x1].GetComponent<BatterySpriteChange>().number_ == field[y2, x1].GetComponent<PowerSpriteChange>().number_)
+                            {
+                                field[y1, x1].GetComponent<BatterySpriteChange>().SetIsChangeReady(false);
                             }
                         }
                     }
@@ -431,71 +455,69 @@ public class StageManager : MonoBehaviour
                         // 同じY軸にあり、電源が入っているなら通電する
                         if (field[y1, x2] != null && field[y1, x2].tag == "Power" && field[y1, x2].GetComponent<PowerSpriteChange>().isChangeFrame_)
                         {
-                            // 電源と対象の床の間に既に通電している床があるなら、通電しない
+                            // 電源と対象の床の間に（既に通電している床 || 電源 || プレイヤー）があるなら通電しない
                             // 向きの取得
                             int tmpHorizontal = x1 - x2;
 
                             // 間に通電済みがあったかフラグ
-                            bool isExisting = false;
+                            bool isExisting_ = false;
 
                             // 電源の左方向にある場合で、間に通電済みがあるか判定
-                            if (!isExisting && tmpHorizontal < 0 && x2 > 0)
+                            if (!isExisting_ && tmpHorizontal < 0 && x2 > 0)
                             {
-                                for (int x3 = (x2 - 1); x3 > x1; x3--)
+                                for (int x3 = (x2 - 1); x3 >= x1; x3--)
                                 {
-                                    if (field[y1, x3] != null && field[y1, x3].tag == "Floor" && field[y1, x3].GetComponent<FloorSpriteChange>().GetIsChange())
+                                    if (CheckBetween(x3, y1))
                                     {
-                                        isExisting = true;
+                                        isExisting_ = true;
                                         break;
                                     }
                                 }
                             }
                             // 電源の右方向にある場合で、間に通電済みがあるか判定
-                            if (!isExisting && tmpHorizontal > 0 && x2 < field.GetLength(1))
+                            if (!isExisting_ && tmpHorizontal > 0 && x2 < field.GetLength(1))
                             {
-                                for (int x3 = (x2 + 1); x3 < x1; x3++)
+                                for (int x3 = (x2 + 1); x3 <= x1; x3++)
                                 {
-                                    if (field[y1, x3] != null && field[y1, x3].tag == "Floor" && field[y1, x3].GetComponent<FloorSpriteChange>().GetIsChange())
+                                    if (CheckBetween(x3, y1))
                                     {
-                                        isExisting = true;
+                                        isExisting_ = true;
                                         break;
                                     }
                                 }
                             }
 
                             // 間に通電済みがあったらループを抜ける
-                            if (isExisting)
+                            if (isExisting_)
                             {
                                 break;
                             }
 
-                            field[y1, x1].GetComponent<FloorSpriteChange>().SetIsChangeReady(true);
+                            if (field[y1, x1].tag == "Floor")
+                            {
+                                field[y1, x1].GetComponent<FloorSpriteChange>().SetIsChangeReady(true);
+                                field[y1, x1].GetComponent<FloorSpriteChange>().number_ = field[y1, x2].GetComponent<PowerSpriteChange>().number_;
+                            }
+                            if (field[y1, x1].tag == "Battery")
+                            {
+                                field[y1, x1].GetComponent<BatterySpriteChange>().SetIsChangeReady(true);
+                                field[y1, x1].GetComponent<BatterySpriteChange>().number_ = field[y1, x2].GetComponent<PowerSpriteChange>().number_;
+                            }
                             isElectrification = true;
                             break;
                         }
 
                         // 通電していないならただの床にする
-                        else if (!isElectrification && field[y1, x1].GetComponent<FloorSpriteChange>().GetIsChange() && field[y1, x2] != null && field[y1, x2].tag == "Power" && !field[y1, x2].GetComponent<PowerSpriteChange>().isChangeFrame_ && field[y1, x2].GetComponent<PowerSpriteChange>().isChangeClear_)
+                        else if (!isElectrification && ((field[y1, x1].tag == "Floor" && field[y1, x1].GetComponent<FloorSpriteChange>().GetIsChange()) || (field[y1, x1].tag == "Battery" && field[y1, x1].GetComponent<BatterySpriteChange>().GetIsChange())) && field[y1, x2] != null && field[y1, x2].tag == "Power" && !field[y1, x2].GetComponent<PowerSpriteChange>().isChangeFrame_ && field[y1, x2].GetComponent<PowerSpriteChange>().isChangeClear_)
                         {
-                            // 対象の床のY座標に電源の入ったスイッチがないかフラグ
-                            bool isCheck = false;
-
-                            for (int y3 = 0; y3 < field.GetLength(0); y3++)
-                            {
-                                if (field[y3, x1] != null && field[y3, x1].tag == "Power" && field[y3, x1].GetComponent<PowerSpriteChange>().GetIsChange())
-                                {
-                                    // 優先順位の判定
-                                    if (field[y3, x1].GetComponent<PowerSpriteChange>().priority_ < field[y1, x2].GetComponent<PowerSpriteChange>().priority_)
-                                    {
-                                        isCheck = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (!isCheck)
+                            // 消した電源と同じ番号を持つ床を消す
+                            if (field[y1, x1].tag == "Floor" && field[y1, x1].GetComponent<FloorSpriteChange>().number_ == field[y1, x2].GetComponent<PowerSpriteChange>().number_)
                             {
                                 field[y1, x1].GetComponent<FloorSpriteChange>().SetIsChangeReady(false);
+                            }
+                            if (field[y1, x1].tag == "Battery" && field[y1, x1].GetComponent<BatterySpriteChange>().number_ == field[y1, x2].GetComponent<PowerSpriteChange>().number_)
+                            {
+                                field[y1, x1].GetComponent<BatterySpriteChange>().SetIsChangeReady(false);
                             }
                         }
                     }
@@ -515,34 +537,71 @@ public class StageManager : MonoBehaviour
                         field[y1, x1].GetComponent<FloorSpriteChange>().SetIsChange();
                     }
 
-                    // 優先順位をずらす
-                    if (field[y1, x1] != null && field[y1, x1].tag == "Power" && !field[y1, x1].GetComponent<PowerSpriteChange>().isChangeClear_ && field[y1, x1].GetComponent<PowerSpriteChange>().GetIsChange())
+                    if (field[y1, x1] != null && field[y1, x1].tag == "Battery")
                     {
-                        for (int y2 = 0; y2 < field.GetLength(0); y2++)
-                        {
-                            for (int x2 = 0; x2 < field.GetLength(1); x2++)
-                            {
-                                if (field[y2, x2] != null && field[y2, x2].tag == "Power" && field[y2, x2].GetComponent<PowerSpriteChange>().isChangeClear_ && !field[y2, x2].GetComponent<PowerSpriteChange>().GetIsChange())
-                                {
-                                    if (field[y2, x2].GetComponent<PowerSpriteChange>().priority_ < field[y1, x1].GetComponent<PowerSpriteChange>().priority_)
-                                    {
-                                        field[y1, x1].GetComponent<PowerSpriteChange>().priority_ -= 1;
-                                    }
-                                }
-                            }
-                        }
+                        field[y1, x1].GetComponent<BatterySpriteChange>().SetIsChange();
                     }
 
-                }
-            }
-
-            for (int y1 = 0; y1 < field.GetLength(0); y1++)
-            {
-                for (int x1 = 0; x1 < field.GetLength(1); x1++)
-                {
                     if (field[y1, x1] != null && field[y1, x1].tag == "Power" && field[y1, x1].GetComponent<PowerSpriteChange>().isChangeClear_ && !field[y1, x1].GetComponent<PowerSpriteChange>().GetIsChange())
                     {
-                        field[y1, x1].GetComponent<PowerSpriteChange>().priority_ = 100;
+                        field[y1, x1].GetComponent<PowerSpriteChange>().number_ = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    private bool CheckBetween(int x, int y)
+    {
+        if (field[y, x] != null && field[y, x].tag == "Floor" && field[y, x].GetComponent<FloorSpriteChange>().GetIsChange())
+        {
+            return true;
+        }
+        if (field[y, x] != null && field[y, x].tag == "Battery" && field[y, x].GetComponent<BatterySpriteChange>().GetIsChange())
+        {
+            return true;
+        }
+        if (playerField[y, x] != null && playerField[y, x].tag == "Player")
+        {
+            return true;
+        }
+        if (field[y, x] != null && field[y, x].tag == "Power")
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void CheckBattery()
+    {
+        bool isClear_ = true;
+
+        for (int y1 = 0; y1 < field.GetLength(0); y1++)
+        {
+            for (int x1 = 0; x1 < field.GetLength(1); x1++)
+            {
+                if (field[y1, x1] != null && field[y1, x1].tag == "Battery" && !field[y1, x1].GetComponent<BatterySpriteChange>().GetIsChange())
+                {
+                    isClear_ = false;
+                    break;
+                }
+            }
+        }
+
+        for (int y1 = 0; y1 < field.GetLength(0); y1++)
+        {
+            for (int x1 = 0; x1 < field.GetLength(1); x1++)
+            {
+                if (field[y1, x1] != null && field[y1, x1].tag == "GoalWall")
+                {
+                    if (isClear_)
+                    {
+                        field[y1, x1].GetComponent<GoalWallSpriteChange>().SetIsChange(false);
+                    }
+                    else
+                    {
+                        field[y1, x1].GetComponent<GoalWallSpriteChange>().SetIsChange(true);
                     }
                 }
             }
