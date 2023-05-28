@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &905129368
+--- !u!1 &1455580740
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,62 +131,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 905129370}
-  - component: {fileID: 905129369}
-  m_Layer: 0
-  m_Name: StageManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &905129369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905129368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87f973e0f7e589b4bad2b0957f52b095, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  floorPrafab_: {fileID: 400186360135539730, guid: a0cce8de1fb95e14d93cd892c6d2d104, type: 3}
-  playerPrafab_: {fileID: 6180668634981237833, guid: 7860d670a9c335748a52e325deee7caa, type: 3}
-  wallPrafab_: {fileID: 2972251302918363050, guid: 3cccbc24505896a4ca1a140038769f9b, type: 3}
-  powerPrefab_: {fileID: 7994764711780659746, guid: c6d452e5aa33f984f85411684c3f75b3, type: 3}
-  batteryPrefab_: {fileID: 400186360135539730, guid: 49e214b7dca525741ab0170302bc63a0, type: 3}
-  goalPrefab_: {fileID: 400186360135539730, guid: af68dc8a7dd8d6d4db2ee3e30386f157, type: 3}
-  goalwallPrefab_: {fileID: 400186360135539730, guid: 34698c547497c0542863e2f7a77dccfe, type: 3}
-  stageFile: {fileID: 4900000, guid: 3112962b29728c84fb5113b99de91170, type: 3}
-  stagePlayerFile: {fileID: 4900000, guid: 58de470035a4c4b489ade14f5ae90f21, type: 3}
---- !u!4 &905129370
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 905129368}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.376387, y: 3.795981, z: -0.00029212981}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1886965621
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1886965624}
-  - component: {fileID: 1886965623}
-  - component: {fileID: 1886965622}
+  - component: {fileID: 1455580743}
+  - component: {fileID: 1455580742}
+  - component: {fileID: 1455580741}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -194,21 +141,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1886965622
+--- !u!81 &1455580741
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886965621}
+  m_GameObject: {fileID: 1455580740}
   m_Enabled: 1
---- !u!20 &1886965623
+--- !u!20 &1455580742
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886965621}
+  m_GameObject: {fileID: 1455580740}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -245,15 +192,15 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &1886965624
+--- !u!4 &1455580743
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1886965621}
+  m_GameObject: {fileID: 1455580740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 6, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

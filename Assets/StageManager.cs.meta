@@ -3,7 +3,16 @@ guid: 87f973e0f7e589b4bad2b0957f52b095
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - floorPrafab_: {fileID: 400186360135539730, guid: a0cce8de1fb95e14d93cd892c6d2d104, type: 3}
+  - playerPrafab_: {fileID: 6180668634981237833, guid: 7860d670a9c335748a52e325deee7caa, type: 3}
+  - wallPrafab_: {fileID: 2972251302918363050, guid: 3cccbc24505896a4ca1a140038769f9b, type: 3}
+  - powerPrefab_: {fileID: 7994764711780659746, guid: c6d452e5aa33f984f85411684c3f75b3, type: 3}
+  - batteryPrefab_: {fileID: 400186360135539730, guid: 49e214b7dca525741ab0170302bc63a0, type: 3}
+  - goalPrefab_: {fileID: 400186360135539730, guid: af68dc8a7dd8d6d4db2ee3e30386f157, type: 3}
+  - goalwallPrefab_: {fileID: 400186360135539730, guid: 34698c547497c0542863e2f7a77dccfe, type: 3}
+  - stageFile: {instanceID: 0}
+  - stagePlayerFile: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
