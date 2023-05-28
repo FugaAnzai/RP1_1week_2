@@ -160,7 +160,7 @@ MonoBehaviour:
   goalPrefab_: {fileID: 400186360135539730, guid: af68dc8a7dd8d6d4db2ee3e30386f157, type: 3}
   goalwallPrefab_: {fileID: 400186360135539730, guid: 34698c547497c0542863e2f7a77dccfe, type: 3}
   stageFile: {fileID: 4900000, guid: 3112962b29728c84fb5113b99de91170, type: 3}
-  stagePlayerFile: {fileID: 4900000, guid: 58de470035a4c4b489ade14f5ae90f21, type: 3}
+  stagePlayerFile: {fileID: 4900000, guid: 1422037aa0f73d541a31691981427514, type: 3}
 --- !u!4 &905129370
 Transform:
   m_ObjectHideFlags: 0
