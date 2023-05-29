@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.101960786, g: 0.105882354, b: 0.18039216, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -200,10 +200,63 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802369206}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 5, y: 6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1081946115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1081946116}
+  - component: {fileID: 1081946117}
+  m_Layer: 0
+  m_Name: StageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1081946116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081946115}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.376387, y: 3.795981, z: -0.00029212981}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1081946117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081946115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f973e0f7e589b4bad2b0957f52b095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorPrafab_: {fileID: 400186360135539730, guid: a0cce8de1fb95e14d93cd892c6d2d104, type: 3}
+  playerPrafab_: {fileID: 6180668634981237833, guid: 7860d670a9c335748a52e325deee7caa, type: 3}
+  wallPrafab_: {fileID: 2972251302918363050, guid: 3cccbc24505896a4ca1a140038769f9b, type: 3}
+  powerPrefab_: {fileID: 7994764711780659746, guid: c6d452e5aa33f984f85411684c3f75b3, type: 3}
+  batteryPrefab_: {fileID: 400186360135539730, guid: 49e214b7dca525741ab0170302bc63a0, type: 3}
+  goalPrefab_: {fileID: 400186360135539730, guid: af68dc8a7dd8d6d4db2ee3e30386f157, type: 3}
+  goalwallPrefab_: {fileID: 400186360135539730, guid: 34698c547497c0542863e2f7a77dccfe, type: 3}
+  stageFile: {fileID: 4900000, guid: 56666ffd7632ba74fbf2aef28f87e182, type: 3}
+  stagePlayerFile: {fileID: 4900000, guid: 1b2e2f4c96f5153468362cade6d42759, type: 3}
