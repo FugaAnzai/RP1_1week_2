@@ -196,8 +196,8 @@ public class StageManager : MonoBehaviour
         if ((field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Wall" || field[moveTo.y, moveTo.x].tag == "Power")) ||
             // 通電床が移動先にあったら移動不可
             (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Floor" && field[moveTo.y, moveTo.x].GetComponent<FloorSpriteChange>().GetIsChange())) ||
-            // 通電電池が移動先にあったら移動不可
-            (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Battery" && field[moveTo.y, moveTo.x].GetComponent<BatterySpriteChange>().GetIsChange())) ||
+            // 電池が移動先にあったら移動不可
+            (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "Battery")) ||
             // ゴール周り壁があったら移動不可
             (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "GoalWall" && field[moveTo.y, moveTo.x].GetComponent<GoalWallSpriteChange>().GetIsChange())))
         {
