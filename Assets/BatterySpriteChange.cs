@@ -10,8 +10,11 @@ public class BatterySpriteChange : MonoBehaviour
     public Sprite onImage;
     //spriteRenderer
     SpriteRenderer spriteRenderer;
+    // パーティクル
+    public GameObject particlePrefab;
 
     private bool isChange_ = false;
+    private bool isPreChange_ = false;
     private bool isChangeReady_ = false;
     public int number_ = 0;
 
@@ -19,6 +22,7 @@ public class BatterySpriteChange : MonoBehaviour
     void Start()
     {
         isChange_ = false;
+        isPreChange_ = isChange_;
         isChangeReady_ = false;
         number_ = 0;
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -55,6 +59,13 @@ public class BatterySpriteChange : MonoBehaviour
         if (isChange_)
         {
             spriteRenderer.sprite = onImage;
+
+            if (!isPreChange_)
+            {
+                GameObject particle = Instantiate(particlePrefab, transform.position, Quaternion.identity); ;
+            }
         }
+
+        isPreChange_ = isChange_;
     }
 }

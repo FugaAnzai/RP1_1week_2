@@ -10,8 +10,11 @@ public class FloorSpriteChange : MonoBehaviour
     public Sprite onImage;
     //spriteRenderer
     SpriteRenderer spriteRenderer;
+    // パーティクル
+    public GameObject particlePrefab;
 
     private bool isChange_ = false;
+    private bool isPreChange_ = false;
     private bool isChangeReady_ = false;
     public int[] number_;
 
@@ -19,6 +22,7 @@ public class FloorSpriteChange : MonoBehaviour
     void Start()
     {
         isChange_ = false;
+        isPreChange_ = isChange_;
         isChangeReady_ = false;
         number_ = new int[8];
         for (int i = 0; i < 8; i++)
@@ -59,6 +63,13 @@ public class FloorSpriteChange : MonoBehaviour
         if (isChange_)
         {
             spriteRenderer.sprite = onImage;
+
+            if (!isPreChange_)
+            {
+                GameObject particle = Instantiate(particlePrefab, transform.position, Quaternion.identity); ;
+            }
         }
+
+        isPreChange_ = isChange_;
     }
 }

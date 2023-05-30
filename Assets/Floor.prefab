@@ -99,3 +99,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offImage: {fileID: 21300000, guid: efd6f7b423d8298478ba2db2dea53639, type: 3}
   onImage: {fileID: 21300000, guid: e1382d1f202fe5646a201f650206cbf5, type: 3}
+  particlePrefab: {fileID: 6272285824070361648, guid: 5dd47d90bc71e504b889fdc2ceec2b7a, type: 3}
+  number_: 
