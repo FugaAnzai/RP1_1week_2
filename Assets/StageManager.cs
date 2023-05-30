@@ -557,6 +557,10 @@ public class StageManager : MonoBehaviour
         {
             return true;
         }
+        if (field[y, x] != null && field[y, x].tag == "GoalWall")
+        {
+            return true;
+        }
         if (field[y, x] != null && field[y, x].tag == "Floor" && field[y, x].GetComponent<FloorSpriteChange>().GetIsChange())
         {
             return true;
