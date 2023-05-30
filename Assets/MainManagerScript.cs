@@ -20,7 +20,7 @@ public class MainManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stageSelect = 0;
+
     }
 
     // Update is called once per frame
