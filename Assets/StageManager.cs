@@ -88,42 +88,42 @@ public class StageManager : MonoBehaviour
 
         if (field[playerIndex.y, playerIndex.x].tag == "Goal")
         {
-            if (MainManagerScript.stageSelect == 1)
+            if (SceneManager.GetActiveScene().name == "Stage1")
             {
                 SceneManager.LoadScene("Stage2");
             }
 
-            if (MainManagerScript.stageSelect == 2)
+            if (SceneManager.GetActiveScene().name == "Stage2")
             {
                 SceneManager.LoadScene("Stage3");
             }
 
-            if (MainManagerScript.stageSelect == 3)
+            if (SceneManager.GetActiveScene().name == "Stage3")
             {
                 SceneManager.LoadScene("Stage4");
             }
 
-            if (MainManagerScript.stageSelect == 4)
+            if (SceneManager.GetActiveScene().name == "Stage4")
             {
                 SceneManager.LoadScene("Stage5");
             }
 
-            if (MainManagerScript.stageSelect == 5)
+            if (SceneManager.GetActiveScene().name == "Stage5")
             {
                 SceneManager.LoadScene("Stage6");
             }
 
-            if (MainManagerScript.stageSelect == 6)
+            if (SceneManager.GetActiveScene().name == "Stage6")
             {
                 SceneManager.LoadScene("Stage7");
             }
 
-            if (MainManagerScript.stageSelect == 7)
+            if (SceneManager.GetActiveScene().name == "Stage7")
             {
                 SceneManager.LoadScene("Stage8");
             }
 
-            if (MainManagerScript.stageSelect == 8)
+            if (SceneManager.GetActiveScene().name == "Stage8")
             {
                 SceneManager.LoadScene("TitleScene");
             }
