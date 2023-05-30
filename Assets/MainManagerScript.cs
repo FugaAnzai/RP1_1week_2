@@ -15,12 +15,12 @@ public class MainManagerScript : MonoBehaviour
     private float cameraT_ = 0;
     private bool isMoveCamera_ = false;
     //ステージセレクトの値
-    public int stageSelect = 1;
+    public static int stageSelect = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        stageSelect = 0;
     }
 
     // Update is called once per frame

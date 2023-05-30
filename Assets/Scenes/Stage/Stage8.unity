@@ -175,8 +175,8 @@ MonoBehaviour:
   goalPrefab_: {fileID: 400186360135539730, guid: af68dc8a7dd8d6d4db2ee3e30386f157, type: 3}
   goalwallPrefab_: {fileID: 400186360135539730, guid: 34698c547497c0542863e2f7a77dccfe, type: 3}
   elecEffect: {fileID: 6649731463333684207, guid: b828bb812a502504389cc7d47c892a8c, type: 3}
-  stageFile: {fileID: 0}
-  stagePlayerFile: {fileID: 0}
+  stageFile: {fileID: 4900000, guid: bab6aae02ed95ad4097c67a8d5e63b13, type: 3}
+  stagePlayerFile: {fileID: 4900000, guid: 99c085d417b272243b6c65d234ef60eb, type: 3}
 --- !u!1 &1455580740
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455580740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 5, y: 6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -287,7 +287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686068851}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.8899999, y: 5.95, z: 10}
+  m_LocalPosition: {x: -8, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
