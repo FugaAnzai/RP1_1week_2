@@ -79,9 +79,54 @@ public class StageManager : MonoBehaviour
 
         // ESC || ÉSÅ[ÉãÇµÇΩÇÁ
         Vector2Int playerIndex = GetPlayerIndex();
-        if (Input.GetKeyDown(KeyCode.Escape) || field[playerIndex.y, playerIndex.x].tag == "Goal")
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
+            MainManagerScript.stageSelect = 0;
             SceneManager.LoadScene("MainScene");
+        }
+
+        if (field[playerIndex.y, playerIndex.x].tag == "Goal")
+        {
+            if (MainManagerScript.stageSelect == 1)
+            {
+                SceneManager.LoadScene("Stage2");
+            }
+
+            if (MainManagerScript.stageSelect == 2)
+            {
+                SceneManager.LoadScene("Stage3");
+            }
+
+            if (MainManagerScript.stageSelect == 3)
+            {
+                SceneManager.LoadScene("Stage4");
+            }
+
+            if (MainManagerScript.stageSelect == 4)
+            {
+                SceneManager.LoadScene("Stage5");
+            }
+
+            if (MainManagerScript.stageSelect == 5)
+            {
+                SceneManager.LoadScene("Stage6");
+            }
+
+            if (MainManagerScript.stageSelect == 6)
+            {
+                SceneManager.LoadScene("Stage7");
+            }
+
+            if (MainManagerScript.stageSelect == 7)
+            {
+                SceneManager.LoadScene("Stage8");
+            }
+
+            if (MainManagerScript.stageSelect == 8)
+            {
+                SceneManager.LoadScene("TitleScene");
+            }
         }
 
     }
@@ -364,7 +409,7 @@ public class StageManager : MonoBehaviour
         Vector2Int downRightIndex = playerIndex + new Vector2Int(1, 1);
         Vector2Int downLeftIndex = playerIndex + new Vector2Int(-1, 1);
 
-        if (field[upIndex.y, upIndex.x] != null && field[upIndex.y, upIndex.x].tag == "Power")
+        if (field[upIndex.y, upIndex.x] != null && field[upIndex.y, upIndex.x].tag == "Power" && field[upIndex.y, upIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[0] == null)
             {
@@ -377,7 +422,7 @@ public class StageManager : MonoBehaviour
             Destroy(elecricEffect[0]);
         }
 
-        if (field[downIndex.y, downIndex.x] != null && field[downIndex.y, downIndex.x].tag == "Power")
+        if (field[downIndex.y, downIndex.x] != null && field[downIndex.y, downIndex.x].tag == "Power" && field[downIndex.y, downIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[1] == null)
             {
@@ -389,7 +434,7 @@ public class StageManager : MonoBehaviour
             Destroy(elecricEffect[1]);
         }
 
-        if (field[rightIndex.y, rightIndex.x] != null && field[rightIndex.y, rightIndex.x].tag == "Power")
+        if (field[rightIndex.y, rightIndex.x] != null && field[rightIndex.y, rightIndex.x].tag == "Power" && field[rightIndex.y, rightIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[2] == null)
             {
@@ -402,7 +447,7 @@ public class StageManager : MonoBehaviour
             Destroy(elecricEffect[2]);
         }
 
-        if (field[leftIndex.y, leftIndex.x] != null && field[leftIndex.y, leftIndex.x].tag == "Power")
+        if (field[leftIndex.y, leftIndex.x] != null && field[leftIndex.y, leftIndex.x].tag == "Power" && field[leftIndex.y, leftIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[3] == null)
             {
@@ -415,7 +460,7 @@ public class StageManager : MonoBehaviour
             Destroy(elecricEffect[3]);
         }
 
-        if (field[upRightIndex.y, upRightIndex.x] != null && field[upRightIndex.y, upRightIndex.x].tag == "Power")
+        if (field[upRightIndex.y, upRightIndex.x] != null && field[upRightIndex.y, upRightIndex.x].tag == "Power" && field[upRightIndex.y, upRightIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[4] == null)
             {
@@ -428,7 +473,7 @@ public class StageManager : MonoBehaviour
             Destroy(elecricEffect[4]);
         }
 
-        if (field[upLeftIndex.y, upLeftIndex.x] != null && field[upLeftIndex.y, upLeftIndex.x].tag == "Power")
+        if (field[upLeftIndex.y, upLeftIndex.x] != null && field[upLeftIndex.y, upLeftIndex.x].tag == "Power" && field[upLeftIndex.y, upLeftIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[5] == null)
             {
@@ -441,7 +486,7 @@ public class StageManager : MonoBehaviour
             Destroy(elecricEffect[5]);
         }
 
-        if (field[downRightIndex.y, downRightIndex.x] != null && field[downRightIndex.y, downRightIndex.x].tag == "Power")
+        if (field[downRightIndex.y, downRightIndex.x] != null && field[downRightIndex.y, downRightIndex.x].tag == "Power" && field[downRightIndex.y, downRightIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[6] == null)
             {
@@ -454,7 +499,7 @@ public class StageManager : MonoBehaviour
             Destroy(elecricEffect[6]);
         }
 
-        if (field[downLeftIndex.y, downLeftIndex.x] != null && field[downLeftIndex.y, downLeftIndex.x].tag == "Power")
+        if (field[downLeftIndex.y, downLeftIndex.x] != null && field[downLeftIndex.y, downLeftIndex.x].tag == "Power" && field[downLeftIndex.y, downLeftIndex.x].GetComponent<PowerSpriteChange>().GetIsChange() == false)
         {
             if (elecricEffect[7] == null)
             {
@@ -466,6 +511,7 @@ public class StageManager : MonoBehaviour
         {
             Destroy(elecricEffect[7]);
         }
+
 
     }
 
