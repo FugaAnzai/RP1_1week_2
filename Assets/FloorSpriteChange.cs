@@ -13,14 +13,18 @@ public class FloorSpriteChange : MonoBehaviour
 
     private bool isChange_ = false;
     private bool isChangeReady_ = false;
-    public int number_ = 0;
+    public int[] number_;
 
     // Start is called before the first frame update
     void Start()
     {
         isChange_ = false;
         isChangeReady_ = false;
-        number_ = 0;
+        number_ = new int[8];
+        for (int i = 0; i < 8; i++)
+        {
+            number_[i] = 0;
+        }
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
