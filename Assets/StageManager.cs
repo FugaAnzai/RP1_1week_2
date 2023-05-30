@@ -34,11 +34,13 @@ public class StageManager : MonoBehaviour
     public GameObject powerPrefab_;
     public GameObject batteryPrefab_;
     public GameObject goalPrefab_;
+    public GameObject goalParticlePrefab_;
     public GameObject goalwallPrefab_;
     public GameObject elecEffect;
     public TextAsset stageFile;
     public TextAsset stagePlayerFile;
 
+    private GameObject goalParticle_;
     private bool isChangePower_ = false;
     private int powerNumber_ = 0;
 
@@ -811,8 +813,26 @@ public class StageManager : MonoBehaviour
                         field[y1, x1].GetComponent<GoalWallSpriteChange>().SetIsChange(true);
                     }
                 }
+
+                // ゴールできるよパーティクル
+                if (isClear_)
+                {
+                    if (goalParticle_ == null && field[y1, x1] != null && field[y1, x1].tag == "Goal")
+                    {
+                        goalParticle_ = Instantiate(goalParticlePrefab_, new Vector3(x1, field.GetLength(0) - y1, 0), Quaternion.identity);
+                    }
+                }
+                else
+                {
+                    if (goalParticle_ != null)
+                    {
+                        Destroy(goalParticle_);
+                    }
+                }
             }
         }
+
+
     }
 
 }
