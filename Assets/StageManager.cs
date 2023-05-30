@@ -5,6 +5,7 @@ using System.Globalization;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
@@ -25,6 +26,7 @@ public class StageManager : MonoBehaviour
     int[,] playerTable;
     GameObject[,] field;
     GameObject[,] playerField;
+    GameObject[] elecricEffect;
 
     public GameObject floorPrafab_;
     public GameObject playerPrafab_;
@@ -33,6 +35,7 @@ public class StageManager : MonoBehaviour
     public GameObject batteryPrefab_;
     public GameObject goalPrefab_;
     public GameObject goalwallPrefab_;
+    public GameObject elecEffect;
     public TextAsset stageFile;
     public TextAsset stagePlayerFile;
 
@@ -42,6 +45,8 @@ public class StageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        elecricEffect = new GameObject[8];
+
         isChangePower_ = false;
         powerNumber_ = 0;
         LoadTileData();
@@ -64,6 +69,8 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
+
+        ElectricEffect();
 
         PlayerMove();
 
@@ -340,6 +347,124 @@ public class StageManager : MonoBehaviour
         if (field[downLeftIndex.y, downLeftIndex.x] != null && field[downLeftIndex.y, downLeftIndex.x].tag == "Power")
         {
             PowerChange(downLeftIndex);
+        }
+
+    }
+
+    void ElectricEffect()
+    {
+
+        Vector2Int playerIndex = GetPlayerIndex();
+        Vector2Int upIndex = playerIndex + new Vector2Int(0, -1);
+        Vector2Int downIndex = playerIndex + new Vector2Int(0, 1);
+        Vector2Int rightIndex = playerIndex + new Vector2Int(1, 0);
+        Vector2Int leftIndex = playerIndex + new Vector2Int(-1, 0);
+        Vector2Int upRightIndex = playerIndex + new Vector2Int(1, -1);
+        Vector2Int upLeftIndex = playerIndex + new Vector2Int(-1, -1);
+        Vector2Int downRightIndex = playerIndex + new Vector2Int(1, 1);
+        Vector2Int downLeftIndex = playerIndex + new Vector2Int(-1, 1);
+
+        if (field[upIndex.y, upIndex.x] != null && field[upIndex.y, upIndex.x].tag == "Power")
+        {
+            if (elecricEffect[0] == null)
+            {
+                elecricEffect[0] = Instantiate(elecEffect, new Vector3(upIndex.x, tileTable.GetLength(0) - upIndex.y, 0), Quaternion.identity);
+                elecricEffect[0].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else
+        {
+            Destroy(elecricEffect[0]);
+        }
+
+        if (field[downIndex.y, downIndex.x] != null && field[downIndex.y, downIndex.x].tag == "Power")
+        {
+            if (elecricEffect[1] == null)
+            {
+                elecricEffect[1] = Instantiate(elecEffect, new Vector3(downIndex.x, tileTable.GetLength(0) - downIndex.y, 0), Quaternion.identity);
+                elecricEffect[1].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else {
+            Destroy(elecricEffect[1]);
+        }
+
+        if (field[rightIndex.y, rightIndex.x] != null && field[rightIndex.y, rightIndex.x].tag == "Power")
+        {
+            if (elecricEffect[2] == null)
+            {
+                elecricEffect[2] = Instantiate(elecEffect, new Vector3(rightIndex.x, tileTable.GetLength(0) - rightIndex.y, 0), Quaternion.identity);
+                elecricEffect[2].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else
+        {
+            Destroy(elecricEffect[2]);
+        }
+
+        if (field[leftIndex.y, leftIndex.x] != null && field[leftIndex.y, leftIndex.x].tag == "Power")
+        {
+            if (elecricEffect[3] == null)
+            {
+                elecricEffect[3] = Instantiate(elecEffect, new Vector3(leftIndex.x, tileTable.GetLength(0) - leftIndex.y, 0), Quaternion.identity);
+                elecricEffect[3].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else
+        {
+            Destroy(elecricEffect[3]);
+        }
+
+        if (field[upRightIndex.y, upRightIndex.x] != null && field[upRightIndex.y, upRightIndex.x].tag == "Power")
+        {
+            if (elecricEffect[4] == null)
+            {
+                elecricEffect[4] = Instantiate(elecEffect, new Vector3(upRightIndex.x, tileTable.GetLength(0) - upRightIndex.y, 0), Quaternion.identity);
+                elecricEffect[4].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else
+        {
+            Destroy(elecricEffect[4]);
+        }
+
+        if (field[upLeftIndex.y, upLeftIndex.x] != null && field[upLeftIndex.y, upLeftIndex.x].tag == "Power")
+        {
+            if (elecricEffect[5] == null)
+            {
+                elecricEffect[5] = Instantiate(elecEffect, new Vector3(upLeftIndex.x, tileTable.GetLength(0) - upLeftIndex.y, 0), Quaternion.identity);
+                elecricEffect[5].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else
+        {
+            Destroy(elecricEffect[5]);
+        }
+
+        if (field[downRightIndex.y, downRightIndex.x] != null && field[downRightIndex.y, downRightIndex.x].tag == "Power")
+        {
+            if (elecricEffect[6] == null)
+            {
+                elecricEffect[6] = Instantiate(elecEffect, new Vector3(downRightIndex.x, tileTable.GetLength(0) - downRightIndex.y, 0), Quaternion.identity);
+                elecricEffect[6].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else
+        {
+            Destroy(elecricEffect[6]);
+        }
+
+        if (field[downLeftIndex.y, downLeftIndex.x] != null && field[downLeftIndex.y, downLeftIndex.x].tag == "Power")
+        {
+            if (elecricEffect[7] == null)
+            {
+                elecricEffect[7] = Instantiate(elecEffect, new Vector3(downLeftIndex.x, tileTable.GetLength(0) - downLeftIndex.y, 0), Quaternion.identity);
+                elecricEffect[7].GetComponent<ParticleSystem>().Play();
+            }
+        }
+        else
+        {
+            Destroy(elecricEffect[7]);
         }
 
     }

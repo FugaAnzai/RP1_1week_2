@@ -114,6 +114,32 @@ public class MainManagerScript : MonoBehaviour
             {
                 SceneManager.LoadScene("Stage3");
             }
+
+            if(stageSelect == 4)
+            {
+                SceneManager.LoadScene("Stage4");
+            }
+
+            if (stageSelect == 5)
+            {
+                SceneManager.LoadScene("Stage5");
+            }
+
+            if (stageSelect == 6)
+            {
+                SceneManager.LoadScene("Stage6");
+            }
+
+            if (stageSelect == 7)
+            {
+                SceneManager.LoadScene("Stage7");
+            }
+
+            if (stageSelect == 8)
+            {
+                SceneManager.LoadScene("Stage8");
+            }
+
         }
     }
 
