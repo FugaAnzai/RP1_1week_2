@@ -15,12 +15,12 @@ public class BackGroundMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position += new Vector3(-0.0015f, 0, 0);
+        this.transform.position += new Vector3(-0.001f, 0, 0);
     }
 
     private void OnBecameInvisible()
     {
-        this.transform.position = start;
+        this.transform.position = start * Time.deltaTime;
     }
 
 }
