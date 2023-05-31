@@ -15,7 +15,7 @@ public class BackGroundMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position += new Vector3(-0.001f, 0, 0);
+        this.transform.position += new Vector3(-0.01f, 0, 0);
     }
 
     private void OnBecameInvisible()

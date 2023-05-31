@@ -14,7 +14,8 @@ public class MainManagerScript : MonoBehaviour
     //ステージセレクト時にカメラをLerp動かすときに使う
     private Vector3 startCamera_ = Vector3.zero;
     private Vector3 endCamera_ = Vector3.zero;
-    private float cameraT_ = 0;
+    public float cameraT_ = 0;
+    private float elapsedTime = 0;
     private bool isMoveCamera_ = false;
     //ステージセレクトの値
     public static int stageSelect = 1;
@@ -22,13 +23,17 @@ public class MainManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+    }
 
+    private void FixedUpdate()
+    {
+        MoveCamera();
     }
 
     // Update is called once per frame
     void Update()
     {
-        MoveCamera();
 
         SelectStage();
 
@@ -43,21 +48,19 @@ public class MainManagerScript : MonoBehaviour
         //フラグをtrueにすると移動開始
         if (isMoveCamera_)
         {
-            //t加算
-            cameraT_ += Time.deltaTime * 2;
-
             //tが1になるまで線形補間
-            if (cameraT_ <= 1.0f)
+            if (cameraT_ < 1.0f)
             {
+                cameraT_ += Time.deltaTime * 2.0f;
                 mainCamera_.transform.position = Vector3.Lerp(startCamera_, endCamera_, cameraT_);
             }
-
-            //tが1以上になったらフラグをfalseに、tを0に
-            if (cameraT_ > 1.0f)
+            else
             {
                 cameraT_ = 0.0f;
                 isMoveCamera_ = false;
             }
+
+
         }
 
     }
