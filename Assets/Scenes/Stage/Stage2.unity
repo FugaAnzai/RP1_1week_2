@@ -354,6 +354,7 @@ MonoBehaviour:
   goalPrefab_: {fileID: 400186360135539730, guid: af68dc8a7dd8d6d4db2ee3e30386f157, type: 3}
   goalParticlePrefab_: {fileID: 8607877450274637773, guid: e5ec47a1630458c43986b32243460edd, type: 3}
   goalwallPrefab_: {fileID: 400186360135539730, guid: 34698c547497c0542863e2f7a77dccfe, type: 3}
+  nextLevelPrefab_: {fileID: 353976845755842551, guid: 78c049ca42cceeb4695f80cd22bc6260, type: 3}
   elecEffect: {fileID: 6649731463333684207, guid: b828bb812a502504389cc7d47c892a8c, type: 3}
   elecSE: {fileID: 8300000, guid: 0de217b2cdd0c16498ffff9a25ad7ae9, type: 3}
   clearSE: {fileID: 8300000, guid: 1108ba293336b5a478bb13130ee7ec35, type: 3}

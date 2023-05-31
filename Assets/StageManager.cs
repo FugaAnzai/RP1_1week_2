@@ -36,6 +36,7 @@ public class StageManager : MonoBehaviour
     public GameObject goalPrefab_;
     public GameObject goalParticlePrefab_;
     public GameObject goalwallPrefab_;
+    public GameObject nextLevelPrefab_;
     public GameObject elecEffect;
     public AudioClip elecSE;
     public AudioClip clearSE;
@@ -43,13 +44,25 @@ public class StageManager : MonoBehaviour
     public TextAsset stagePlayerFile;
 
     private GameObject goalParticle_;
+    private GameObject nextLevel_;
+    private bool isStartLevel_;
     private bool isChangePower_ = false;
     private int powerNumber_ = 0;
+
+    Camera camera;
 
     // Start is called before the first frame update
     void Start()
     {
         elecricEffect = new GameObject[8];
+
+        camera = Camera.main;
+
+        if (!isStartLevel_ && nextLevel_ == null)
+        {
+            nextLevel_ = Instantiate(nextLevelPrefab_, new Vector3(camera.transform.position.x, camera.transform.position.y), Quaternion.identity);
+            nextLevel_.GetComponent<NextLevelScript>().isStartLevelStart_ = true;
+        }
 
         isChangePower_ = false;
         powerNumber_ = 0;
@@ -60,6 +73,12 @@ public class StageManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (nextLevel_ != null && nextLevel_.GetComponent<NextLevelScript>().isStartLevelClear_)
+        {
+            isStartLevel_ = true;
+            Destroy(nextLevel_);
+        }
+
         // ìdåπÇêÿÇËë÷Ç¶ÇΩÉtÉåÅ[ÉÄÇ©îªíËÇÃèâä˙âª
         isChangePower_ = false;
         for (int y1 = 0; y1 < field.GetLength(0); y1++)
@@ -92,47 +111,56 @@ public class StageManager : MonoBehaviour
 
         if (field[playerIndex.y, playerIndex.x].tag == "Goal")
         {
-            if (SceneManager.GetActiveScene().name == "Stage1")
+            if (isStartLevel_ && nextLevel_ == null)
             {
-                SceneManager.LoadScene("Stage2");
+                nextLevel_ = Instantiate(nextLevelPrefab_, new Vector3(camera.transform.position.x, camera.transform.position.y), Quaternion.identity);
+                nextLevel_.GetComponent<NextLevelScript>().isNextLevelStart_ = true;
             }
 
-            if (SceneManager.GetActiveScene().name == "Stage2")
+            if (nextLevel_.GetComponent<NextLevelScript>().isNextLevelClear_)
             {
-                SceneManager.LoadScene("Stage3");
-            }
+                isStartLevel_ = false;
+                if (SceneManager.GetActiveScene().name == "Stage1")
+                {
+                    SceneManager.LoadScene("Stage2");
+                }
 
-            if (SceneManager.GetActiveScene().name == "Stage3")
-            {
-                SceneManager.LoadScene("Stage4");
-            }
+                if (SceneManager.GetActiveScene().name == "Stage2")
+                {
+                    SceneManager.LoadScene("Stage3");
+                }
 
-            if (SceneManager.GetActiveScene().name == "Stage4")
-            {
-                SceneManager.LoadScene("Stage5");
-            }
+                if (SceneManager.GetActiveScene().name == "Stage3")
+                {
+                    SceneManager.LoadScene("Stage4");
+                }
 
-            if (SceneManager.GetActiveScene().name == "Stage5")
-            {
-                SceneManager.LoadScene("Stage6");
-            }
+                if (SceneManager.GetActiveScene().name == "Stage4")
+                {
+                    SceneManager.LoadScene("Stage5");
+                }
 
-            if (SceneManager.GetActiveScene().name == "Stage6")
-            {
-                SceneManager.LoadScene("Stage7");
-            }
+                if (SceneManager.GetActiveScene().name == "Stage5")
+                {
+                    SceneManager.LoadScene("Stage6");
+                }
 
-            if (SceneManager.GetActiveScene().name == "Stage7")
-            {
-                SceneManager.LoadScene("Stage8");
-            }
+                if (SceneManager.GetActiveScene().name == "Stage6")
+                {
+                    SceneManager.LoadScene("Stage7");
+                }
 
-            if (SceneManager.GetActiveScene().name == "Stage8")
-            {
-                SceneManager.LoadScene("TitleScene");
+                if (SceneManager.GetActiveScene().name == "Stage7")
+                {
+                    SceneManager.LoadScene("Stage8");
+                }
+
+                if (SceneManager.GetActiveScene().name == "Stage8")
+                {
+                    SceneManager.LoadScene("TitleScene");
+                }
             }
         }
-
     }
 
     public void LoadTileData()
