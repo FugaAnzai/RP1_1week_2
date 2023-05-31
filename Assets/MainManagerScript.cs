@@ -44,7 +44,7 @@ public class MainManagerScript : MonoBehaviour
         if (isMoveCamera_)
         {
             //t‰ÁZ
-            cameraT_ += 0.02f;
+            cameraT_ += Time.deltaTime * 2;
 
             //t‚ª1‚É‚È‚é‚Ü‚ÅüŒ`•âŠÔ
             if (cameraT_ <= 1.0f)
