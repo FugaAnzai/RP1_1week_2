@@ -8,7 +8,7 @@ public class NextLevelScript : MonoBehaviour
     public bool isNextLevelClear_;
     public bool isStartLevelStart_;
     public bool isStartLevelClear_;
-    private float alpha;
+    private float alpha = 0.0f;
     private float lifeTime;
     private float leftLifeTime;
 
@@ -21,7 +21,7 @@ public class NextLevelScript : MonoBehaviour
         isStartLevelClear_ = false;
 
         fadeMaterial = GetComponent<SpriteRenderer>();
-        alpha = fadeMaterial.color.a;
+        alpha = 0.0f;
 
         // è¡ñ≈Ç∑ÇÈÇ‹Ç≈ÇÃéûä‘ÇÃê›íË
         lifeTime = 0.25f;
