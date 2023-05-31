@@ -24,7 +24,7 @@ public class NextLevelScript : MonoBehaviour
         alpha = fadeMaterial.color.a;
 
         // Á–Å‚·‚é‚Ü‚Å‚ÌŠÔ‚Ìİ’è
-        lifeTime = 0.5f;
+        lifeTime = 0.25f;
         // c‚èŠÔ‚ğ‰Šú‰»
         leftLifeTime = lifeTime;
     }
