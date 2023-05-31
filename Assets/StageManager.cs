@@ -37,6 +37,8 @@ public class StageManager : MonoBehaviour
     public GameObject goalParticlePrefab_;
     public GameObject goalwallPrefab_;
     public GameObject elecEffect;
+    public AudioClip elecSE;
+    public AudioClip clearSE;
     public TextAsset stageFile;
     public TextAsset stagePlayerFile;
 
@@ -359,41 +361,49 @@ public class StageManager : MonoBehaviour
 
         if (field[upLeftIndex.y, upLeftIndex.x] != null && field[upLeftIndex.y, upLeftIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(upLeftIndex);
         }
 
         if (field[upIndex.y, upIndex.x] != null && field[upIndex.y,upIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(upIndex);
         }
 
         if (field[upRightIndex.y, upRightIndex.x] != null && field[upRightIndex.y, upRightIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(upRightIndex);
         }
 
         if (field[leftIndex.y, leftIndex.x] != null && field[leftIndex.y, leftIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(leftIndex);
         }
 
         if (field[rightIndex.y, rightIndex.x] != null && field[rightIndex.y, rightIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(rightIndex);
         }
 
         if (field[downLeftIndex.y, downLeftIndex.x] != null && field[downLeftIndex.y, downLeftIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(downLeftIndex);
         }
 
         if (field[downIndex.y, downIndex.x] != null && field[downIndex.y, downIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(downIndex);
         }
 
         if (field[downRightIndex.y, downRightIndex.x] != null && field[downRightIndex.y, downRightIndex.x].tag == "Power")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(downRightIndex);
         }
 
@@ -804,11 +814,13 @@ public class StageManager : MonoBehaviour
             {
                 if (field[y1, x1] != null && field[y1, x1].tag == "GoalWall")
                 {
-                    if (isClear_)
+                    if (isClear_ && field[y1, x1].GetComponent<GoalWallSpriteChange>().GetIsChange())
                     {
+                        this.GetComponent<AudioSource>().PlayOneShot(clearSE);
                         field[y1, x1].GetComponent<GoalWallSpriteChange>().SetIsChange(false);
+
                     }
-                    else
+                    else if(!isClear_)
                     {
                         field[y1, x1].GetComponent<GoalWallSpriteChange>().SetIsChange(true);
                     }

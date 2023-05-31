@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TitleManagerScript : MonoBehaviour
 {
+    public AudioClip decide;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,14 +19,17 @@ public class TitleManagerScript : MonoBehaviour
         //スペースが押されたら遷移
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ChangeScene();
+            this.GetComponent<AudioSource>().PlayOneShot(decide);
+
+            StartCoroutine(ChangeScene());
         }
 
     }
 
     //メインシーンへの遷移
-    void ChangeScene()
+    IEnumerator ChangeScene()
     {
+        yield return new WaitForSeconds(0.3f);
         SceneManager.LoadScene("MainScene");
     }
 

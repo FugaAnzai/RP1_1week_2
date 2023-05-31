@@ -8,6 +8,8 @@ public class MainManagerScript : MonoBehaviour
 
     //カメラのゲームオブジェクト
     public GameObject mainCamera_;
+    public AudioClip selectSE;
+    public AudioClip decideSE;
 
     //ステージセレクト時にカメラをLerp動かすときに使う
     private Vector3 startCamera_ = Vector3.zero;
@@ -42,7 +44,7 @@ public class MainManagerScript : MonoBehaviour
         if (isMoveCamera_)
         {
             //t加算
-            cameraT_ += 0.01f;
+            cameraT_ += 0.02f;
 
             //tが1になるまで線形補間
             if (cameraT_ <= 1.0f)
@@ -70,8 +72,9 @@ public class MainManagerScript : MonoBehaviour
     private void SelectStage()
     {
         //ステージセレクト右へ移動
-        if (Input.GetKeyDown(KeyCode.D) && !isMoveCamera_)
+        if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !isMoveCamera_)
         {
+            this.GetComponent<AudioSource>().PlayOneShot(selectSE);
             //カメラ移動フラグをtrueに
             isMoveCamera_ = true;
             //ステージセレクト加算
@@ -81,8 +84,9 @@ public class MainManagerScript : MonoBehaviour
         }
 
         //ステージセレクト左へ移動
-        if (Input.GetKeyDown(KeyCode.A) && !isMoveCamera_ && stageSelect > 1)
+        if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && !isMoveCamera_ && stageSelect > 1)
         {
+            this.GetComponent<AudioSource>().PlayOneShot(selectSE);
             //カメラ移動フラグをtrueに
             isMoveCamera_ = true;
             //ステージセレクト減算
@@ -100,46 +104,55 @@ public class MainManagerScript : MonoBehaviour
         //スペースが押されたらシーン遷移
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (stageSelect == 1)
-            {
-                SceneManager.LoadScene("Stage1");
-            }
+            StartCoroutine(ChangeScene());
 
-            if (stageSelect == 2)
-            {
-                SceneManager.LoadScene("Stage2");
-            }
+        }
+    }
 
-            if (stageSelect == 3)
-            {
-                SceneManager.LoadScene("Stage3");
-            }
+    IEnumerator ChangeScene()
+    {
+        this.GetComponent<AudioSource>().PlayOneShot(decideSE);
 
-            if(stageSelect == 4)
-            {
-                SceneManager.LoadScene("Stage4");
-            }
+        yield return new WaitForSeconds(0.3f);
 
-            if (stageSelect == 5)
-            {
-                SceneManager.LoadScene("Stage5");
-            }
+        if (stageSelect == 1)
+        {
+            SceneManager.LoadScene("Stage1");
+        }
 
-            if (stageSelect == 6)
-            {
-                SceneManager.LoadScene("Stage6");
-            }
+        if (stageSelect == 2)
+        {
+            SceneManager.LoadScene("Stage2");
+        }
 
-            if (stageSelect == 7)
-            {
-                SceneManager.LoadScene("Stage7");
-            }
+        if (stageSelect == 3)
+        {
+            SceneManager.LoadScene("Stage3");
+        }
 
-            if (stageSelect == 8)
-            {
-                SceneManager.LoadScene("Stage8");
-            }
+        if (stageSelect == 4)
+        {
+            SceneManager.LoadScene("Stage4");
+        }
 
+        if (stageSelect == 5)
+        {
+            SceneManager.LoadScene("Stage5");
+        }
+
+        if (stageSelect == 6)
+        {
+            SceneManager.LoadScene("Stage6");
+        }
+
+        if (stageSelect == 7)
+        {
+            SceneManager.LoadScene("Stage7");
+        }
+
+        if (stageSelect == 8)
+        {
+            SceneManager.LoadScene("Stage8");
         }
     }
 
