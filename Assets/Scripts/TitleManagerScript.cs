@@ -26,11 +26,11 @@ public class TitleManagerScript : MonoBehaviour
 
     }
 
-    //メインシーンへの遷移
+    //ステージセレクトへの遷移
     IEnumerator ChangeScene()
     {
         yield return new WaitForSeconds(0.3f);
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("SelectScene");
     }
 
 }

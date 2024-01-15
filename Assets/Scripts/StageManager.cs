@@ -456,7 +456,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[0] == null)
             {
                 elecricEffect[0] = Instantiate(elecEffect, new Vector3(upIndex.x, tileTable.GetLength(0) - upIndex.y, 0), Quaternion.identity);
-                elecricEffect[0].GetComponent<ParticleSystem>().Play();
+                elecricEffect[0].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else
@@ -469,7 +469,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[1] == null)
             {
                 elecricEffect[1] = Instantiate(elecEffect, new Vector3(downIndex.x, tileTable.GetLength(0) - downIndex.y, 0), Quaternion.identity);
-                elecricEffect[1].GetComponent<ParticleSystem>().Play();
+                elecricEffect[1].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else {
@@ -481,7 +481,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[2] == null)
             {
                 elecricEffect[2] = Instantiate(elecEffect, new Vector3(rightIndex.x, tileTable.GetLength(0) - rightIndex.y, 0), Quaternion.identity);
-                elecricEffect[2].GetComponent<ParticleSystem>().Play();
+                elecricEffect[2].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else
@@ -494,7 +494,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[3] == null)
             {
                 elecricEffect[3] = Instantiate(elecEffect, new Vector3(leftIndex.x, tileTable.GetLength(0) - leftIndex.y, 0), Quaternion.identity);
-                elecricEffect[3].GetComponent<ParticleSystem>().Play();
+                elecricEffect[3].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else
@@ -507,7 +507,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[4] == null)
             {
                 elecricEffect[4] = Instantiate(elecEffect, new Vector3(upRightIndex.x, tileTable.GetLength(0) - upRightIndex.y, 0), Quaternion.identity);
-                elecricEffect[4].GetComponent<ParticleSystem>().Play();
+                elecricEffect[4].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else
@@ -520,7 +520,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[5] == null)
             {
                 elecricEffect[5] = Instantiate(elecEffect, new Vector3(upLeftIndex.x, tileTable.GetLength(0) - upLeftIndex.y, 0), Quaternion.identity);
-                elecricEffect[5].GetComponent<ParticleSystem>().Play();
+                elecricEffect[5].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else
@@ -533,7 +533,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[6] == null)
             {
                 elecricEffect[6] = Instantiate(elecEffect, new Vector3(downRightIndex.x, tileTable.GetLength(0) - downRightIndex.y, 0), Quaternion.identity);
-                elecricEffect[6].GetComponent<ParticleSystem>().Play();
+                elecricEffect[6].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else
@@ -546,7 +546,7 @@ public class StageManager : MonoBehaviour
             if (elecricEffect[7] == null)
             {
                 elecricEffect[7] = Instantiate(elecEffect, new Vector3(downLeftIndex.x, tileTable.GetLength(0) - downLeftIndex.y, 0), Quaternion.identity);
-                elecricEffect[7].GetComponent<ParticleSystem>().Play();
+                elecricEffect[7].transform.GetChild(0).GetComponent<ParticleSystem>().Play();
             }
         }
         else
