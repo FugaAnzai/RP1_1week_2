@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
@@ -58,6 +59,10 @@ public class StageManager : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 endPosition;
     private GameObject playerObj;
+
+    // プレイヤーがそこには移動できないよというのを表現するために
+    private bool isFailMove = false;
+    private float positionT;
 
     void Start()
     {
@@ -298,7 +303,7 @@ public class StageManager : MonoBehaviour
             // ゴール周り壁があったら移動不可
             (field[moveTo.y, moveTo.x] != null && (field[moveTo.y, moveTo.x].tag == "GoalWall" && field[moveTo.y, moveTo.x].GetComponent<GoalWallSpriteChange>().GetIsChange())))
         {
-            Debug.Log("Failed");
+            FailMoveInitialize(moveFrom, moveTo);
             return false;
         }
 
@@ -315,7 +320,7 @@ public class StageManager : MonoBehaviour
 
     void PlayerMove()
     {
-        if (!isMove)
+        if (!isMove && !isFailMove)
         {
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
@@ -335,7 +340,7 @@ public class StageManager : MonoBehaviour
                 MoveObject("Player", playerIndex, playerIndex + move);
             }
 
-            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
                 Vector2Int playerIndex = GetPlayerIndex();
                 Vector2Int move = new(1, 0);
@@ -353,7 +358,7 @@ public class StageManager : MonoBehaviour
                 MoveObject("Player", playerIndex, playerIndex - move);
             }
 
-            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+            else if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
             {
 
                 Vector2Int playerIndex = GetPlayerIndex();
@@ -362,7 +367,7 @@ public class StageManager : MonoBehaviour
                 MoveObject("Player", playerIndex, playerIndex - move);
             }
 
-            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+            else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
             {
 
                 Vector2Int playerIndex = GetPlayerIndex();
@@ -377,13 +382,29 @@ public class StageManager : MonoBehaviour
                 FloorElectrification();
             }
         }
-        else
+        else if (isMove)
         {
             moveTimer -= Time.deltaTime;
             moveTimer = Mathf.Clamp(moveTimer, 0f, moveTime);
             float t = moveTimer / moveTime;
             playerObj.transform.position = Vector3.Lerp(endPosition, startPosition, t * t);
             if (moveTimer == 0f) { isMove = false; }
+        }
+        else if (isFailMove)
+        {
+            moveTimer -= Time.deltaTime;
+            moveTimer = Mathf.Clamp(moveTimer, 0f, moveTime);
+            float t = moveTimer / moveTime;
+            if (t < 0.5f)
+            {
+                positionT = Mathf.Lerp(1f, 0f, t);
+            }
+            else
+            {
+                positionT = Mathf.Lerp(0f, 1f, t);
+            }
+            playerObj.transform.position = Vector3.Lerp(endPosition, startPosition, positionT);
+            if (moveTimer == 0f) { isFailMove = false; }
         }
     }
 
@@ -394,6 +415,16 @@ public class StageManager : MonoBehaviour
         startPosition = playerObj.transform.position;
         endPosition = new Vector3(moveTo.x, playerField.GetLength(0) - moveTo.y, 0);
         isMove = true;
+    }
+
+    void FailMoveInitialize(Vector2Int moveFrom, Vector2Int moveTo)
+    {
+        positionT = 0f;
+        moveTimer = moveTime;
+        playerObj = playerField[moveFrom.y, moveFrom.x].gameObject;
+        startPosition = playerObj.transform.position;
+        endPosition = new Vector3(moveTo.x, playerField.GetLength(0) - moveTo.y, 0);
+        isFailMove = true;
     }
 
     void Power()
