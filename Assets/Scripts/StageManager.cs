@@ -51,7 +51,6 @@ public class StageManager : MonoBehaviour
 
     Camera camera;
 
-    // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -71,7 +70,6 @@ public class StageManager : MonoBehaviour
         CreateStage();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (nextLevel_ != null && nextLevel_.GetComponent<NextLevelScript>().isStartLevelClear_)
@@ -123,49 +121,49 @@ public class StageManager : MonoBehaviour
                 nextLevel_ = Instantiate(nextLevelPrefab_, new Vector3(camera.transform.position.x, camera.transform.position.y), Quaternion.identity);
                 nextLevel_.GetComponent<NextLevelScript>().isNextLevelStart_ = true;
             }
+        }
 
-            if (nextLevel_.GetComponent<NextLevelScript>().isNextLevelClear_)
+        if (nextLevel_ && nextLevel_.GetComponent<NextLevelScript>().isNextLevelClear_)
+        {
+            isStartLevel_ = false;
+            if (SceneManager.GetActiveScene().name == "Stage1")
             {
-                isStartLevel_ = false;
-                if (SceneManager.GetActiveScene().name == "Stage1")
-                {
-                    SceneManager.LoadScene("Stage2");
-                }
+                SceneManager.LoadScene("Stage2");
+            }
 
-                if (SceneManager.GetActiveScene().name == "Stage2")
-                {
-                    SceneManager.LoadScene("Stage3");
-                }
+            if (SceneManager.GetActiveScene().name == "Stage2")
+            {
+                SceneManager.LoadScene("Stage3");
+            }
 
-                if (SceneManager.GetActiveScene().name == "Stage3")
-                {
-                    SceneManager.LoadScene("Stage4");
-                }
+            if (SceneManager.GetActiveScene().name == "Stage3")
+            {
+                SceneManager.LoadScene("Stage4");
+            }
 
-                if (SceneManager.GetActiveScene().name == "Stage4")
-                {
-                    SceneManager.LoadScene("Stage5");
-                }
+            if (SceneManager.GetActiveScene().name == "Stage4")
+            {
+                SceneManager.LoadScene("Stage5");
+            }
 
-                if (SceneManager.GetActiveScene().name == "Stage5")
-                {
-                    SceneManager.LoadScene("Stage6");
-                }
+            if (SceneManager.GetActiveScene().name == "Stage5")
+            {
+                SceneManager.LoadScene("Stage6");
+            }
 
-                if (SceneManager.GetActiveScene().name == "Stage6")
-                {
-                    SceneManager.LoadScene("Stage7");
-                }
+            if (SceneManager.GetActiveScene().name == "Stage6")
+            {
+                SceneManager.LoadScene("Stage7");
+            }
 
-                if (SceneManager.GetActiveScene().name == "Stage7")
-                {
-                    SceneManager.LoadScene("Stage8");
-                }
+            if (SceneManager.GetActiveScene().name == "Stage7")
+            {
+                SceneManager.LoadScene("Stage8");
+            }
 
-                if (SceneManager.GetActiveScene().name == "Stage8")
-                {
-                    SceneManager.LoadScene("TitleScene");
-                }
+            if (SceneManager.GetActiveScene().name == "Stage8")
+            {
+                SceneManager.LoadScene("TitleScene");
             }
         }
     }

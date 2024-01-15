@@ -14,7 +14,6 @@ public class NextLevelScript : MonoBehaviour
 
     SpriteRenderer fadeMaterial;
 
-    // Start is called before the first frame update
     void Start()
     {
         isNextLevelClear_ = false;
@@ -29,7 +28,6 @@ public class NextLevelScript : MonoBehaviour
         leftLifeTime = lifeTime;
     }
 
-    // Update is called once per frame
     void Update()
     {
         // ç¿ïW
