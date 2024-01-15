@@ -391,11 +391,11 @@ public class StageManager : MonoBehaviour
             float t = moveTimer / moveTime;
             if (t < 0.5f)
             {
-                positionT = Mathf.Lerp(1f, 0f, t);
+                positionT = Mathf.Lerp(1f, 0f, t * 0.5f);
             }
             else
             {
-                positionT = Mathf.Lerp(0f, 1f, t);
+                positionT = Mathf.Lerp(1f, 0f, (1f - t) * 0.5f);
             }
             playerObj.transform.position = Vector3.Lerp(endPosition, startPosition, positionT);
             if (moveTimer == 0f) { isFailMove = false; }
@@ -437,7 +437,7 @@ public class StageManager : MonoBehaviour
 
         if (field[upLeftIndex.y, upLeftIndex.x] != null && field[upLeftIndex.y, upLeftIndex.x].tag == "Power")
         {
-            this.GetComponent<AudioSource>().PlayOneShot(elecSE);
+            GetComponent<AudioSource>().PlayOneShot(elecSE);
             PowerChange(upLeftIndex);
         }
 
@@ -487,7 +487,6 @@ public class StageManager : MonoBehaviour
 
     void ElectricEffect()
     {
-
         Vector2Int playerIndex = GetPlayerIndex();
         Vector2Int upIndex = playerIndex + new Vector2Int(0, -1);
         Vector2Int downIndex = playerIndex + new Vector2Int(0, 1);
@@ -600,8 +599,6 @@ public class StageManager : MonoBehaviour
         {
             Destroy(elecricEffect[7]);
         }
-
-
     }
 
     void PowerChange(Vector2Int vector2)
