@@ -20,7 +20,6 @@ public class MainManagerScript : MonoBehaviour
     //ステージセレクトの値
     public static int stageSelect = 1;
 
-    // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -31,10 +30,8 @@ public class MainManagerScript : MonoBehaviour
         MoveCamera();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
         SelectStage();
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -59,10 +56,7 @@ public class MainManagerScript : MonoBehaviour
                 cameraT_ = 0.0f;
                 isMoveCamera_ = false;
             }
-
-
         }
-
     }
 
     //MoveCameraのLerpに使う値をセット
@@ -75,7 +69,7 @@ public class MainManagerScript : MonoBehaviour
     private void SelectStage()
     {
         //ステージセレクト右へ移動
-        if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !isMoveCamera_)
+        if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && !isMoveCamera_ && stageSelect < 8)
         {
             this.GetComponent<AudioSource>().PlayOneShot(selectSE);
             //カメラ移動フラグをtrueに
@@ -98,17 +92,10 @@ public class MainManagerScript : MonoBehaviour
             SetMoveCamera(mainCamera_.transform.position, mainCamera_.transform.position + new Vector3(-4, 0, 0));
         }
 
-        //1以下にならないように
-        if (stageSelect <= 1)
-        {
-            stageSelect = 1;
-        }
-
         //スペースが押されたらシーン遷移
         if (Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(ChangeScene());
-
         }
     }
 
@@ -158,5 +145,4 @@ public class MainManagerScript : MonoBehaviour
             SceneManager.LoadScene("Stage8");
         }
     }
-
 }

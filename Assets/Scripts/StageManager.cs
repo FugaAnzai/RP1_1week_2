@@ -107,7 +107,13 @@ public class StageManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             MainManagerScript.stageSelect = 0;
-            SceneManager.LoadScene("MainScene");
+            SceneManager.LoadScene("SelectScene");
+        }
+
+        // ƒŠƒZƒbƒg
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         if (field[playerIndex.y, playerIndex.x].tag == "Goal")
