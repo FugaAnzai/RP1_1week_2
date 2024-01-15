@@ -51,6 +51,14 @@ public class StageManager : MonoBehaviour
 
     Camera camera;
 
+    // プレイヤーが徐々に移動するように
+    private bool isMove = false;
+    private float moveTime = 0.12f;
+    private float moveTimer;
+    private Vector3 startPosition;
+    private Vector3 endPosition;
+    private GameObject playerObj;
+
     void Start()
     {
         Application.targetFrameRate = 60;
@@ -295,7 +303,8 @@ public class StageManager : MonoBehaviour
         }
 
         //オブジェクトの座標を変更
-        playerField[moveFrom.y, moveFrom.x].transform.position = new Vector3(moveTo.x, playerField.GetLength(0) - moveTo.y, 0);
+        //playerField[moveFrom.y, moveFrom.x].transform.position = new Vector3(moveTo.x, playerField.GetLength(0) - moveTo.y, 0);
+        MoveInitialize(moveFrom, moveTo);
         //現在のプレイヤーオブジェクトを移動先に代入
         playerField[moveTo.y, moveTo.x] = playerField[moveFrom.y, moveFrom.x];
         //移動前のオブジェクトにnullを代入
@@ -306,76 +315,85 @@ public class StageManager : MonoBehaviour
 
     void PlayerMove()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        if (!isMove)
         {
-
-            Vector2Int playerIndex = GetPlayerIndex();
-            Vector2Int move = new(1, 0);
-
-            for (int y = 0; y < playerField.GetLength(0); y++)
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
             {
-                for (int x = 0; x < playerField.GetLength(1); x++)
+                Vector2Int playerIndex = GetPlayerIndex();
+                Vector2Int move = new(1, 0);
+
+                for (int y = 0; y < playerField.GetLength(0); y++)
                 {
-                    if (playerField[y, x] != null && playerField[y, x].tag == "Player")
+                    for (int x = 0; x < playerField.GetLength(1); x++)
                     {
-                        playerField[y, x].GetComponent<SpriteRenderer>().flipX = false;
+                        if (playerField[y, x] != null && playerField[y, x].tag == "Player")
+                        {
+                            playerField[y, x].GetComponent<SpriteRenderer>().flipX = false;
+                        }
                     }
                 }
+                MoveObject("Player", playerIndex, playerIndex + move);
             }
 
-            MoveObject("Player", playerIndex, playerIndex + move);
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-        {
-
-            Vector2Int playerIndex = GetPlayerIndex();
-
-            Vector2Int move = new(1, 0);
-
-            for (int y = 0; y < playerField.GetLength(0); y++)
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
             {
-                for (int x = 0; x < playerField.GetLength(1); x++)
+                Vector2Int playerIndex = GetPlayerIndex();
+                Vector2Int move = new(1, 0);
+
+                for (int y = 0; y < playerField.GetLength(0); y++)
                 {
-                    if (playerField[y, x] != null && playerField[y, x].tag == "Player")
+                    for (int x = 0; x < playerField.GetLength(1); x++)
                     {
-                        playerField[y,x].GetComponent<SpriteRenderer>().flipX = true;
+                        if (playerField[y, x] != null && playerField[y, x].tag == "Player")
+                        {
+                            playerField[y, x].GetComponent<SpriteRenderer>().flipX = true;
+                        }
                     }
                 }
+                MoveObject("Player", playerIndex, playerIndex - move);
             }
 
-            MoveObject("Player", playerIndex, playerIndex - move);
+            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+            {
 
+                Vector2Int playerIndex = GetPlayerIndex();
+                Vector2Int move = new(0, 1);
+
+                MoveObject("Player", playerIndex, playerIndex - move);
+            }
+
+            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+            {
+
+                Vector2Int playerIndex = GetPlayerIndex();
+                Vector2Int move = new(0, 1);
+
+                MoveObject("Player", playerIndex, playerIndex + move);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Power();
+                FloorElectrification();
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        else
         {
-
-            Vector2Int playerIndex = GetPlayerIndex();
-            Vector2Int move = new(0, 1);
-
-            MoveObject("Player", playerIndex, playerIndex - move);
-
+            moveTimer -= Time.deltaTime;
+            moveTimer = Mathf.Clamp(moveTimer, 0f, moveTime);
+            float t = moveTimer / moveTime;
+            playerObj.transform.position = Vector3.Lerp(endPosition, startPosition, t * t);
+            if (moveTimer == 0f) { isMove = false; }
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-        {
-
-            Vector2Int playerIndex = GetPlayerIndex();
-
-            Vector2Int move = new(0, 1);
-
-            MoveObject("Player", playerIndex, playerIndex + move);
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Power();
-            FloorElectrification();
-        }
-
+    void MoveInitialize(Vector2Int moveFrom, Vector2Int moveTo)
+    {
+        moveTimer = moveTime;
+        playerObj = playerField[moveFrom.y, moveFrom.x].gameObject;
+        startPosition = playerObj.transform.position;
+        endPosition = new Vector3(moveTo.x, playerField.GetLength(0) - moveTo.y, 0);
+        isMove = true;
     }
 
     void Power()
