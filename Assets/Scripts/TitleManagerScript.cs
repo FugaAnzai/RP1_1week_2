@@ -8,21 +8,23 @@ public class TitleManagerScript : MonoBehaviour
 {
     public AudioClip decide;
 
-    // Start is called before the first frame update
+    private bool isStartChangeScene = false;
+
     void Start()
     {
         Application.targetFrameRate = 60;
     }
 
-    // Update is called once per frame
     void Update()
     {
         //スペースが押されたら遷移
-        if (Input.GetKeyDown(KeyCode.Space) || Gamepad.current.buttonSouth.isPressed)
+        if (!isStartChangeScene && (Input.GetKeyDown(KeyCode.Space) || Gamepad.current.buttonSouth.isPressed))
         {
             this.GetComponent<AudioSource>().PlayOneShot(decide);
 
             StartCoroutine(ChangeScene());
+
+            isStartChangeScene = true;
         }
 
     }
