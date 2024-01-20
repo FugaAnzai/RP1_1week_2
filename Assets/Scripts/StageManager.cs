@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
@@ -33,6 +35,7 @@ public class StageManager : MonoBehaviour
     public GameObject goalwallPrefab_;
     public GameObject nextLevelPrefab_;
     public GameObject elecEffect;
+    public GameObject BlockElectroPrefab;
     public AudioClip elecSE;
     public AudioClip clearSE;
     public TextAsset stageFile;
@@ -40,9 +43,11 @@ public class StageManager : MonoBehaviour
 
     private GameObject goalParticle_;
     private GameObject nextLevel_;
+    private GameObject blockElectroEffect_;
     private bool isStartLevel_;
     private bool isChangePower_ = false;
     private int powerNumber_ = 0;
+    private bool preIsPressed = false;
 
     Camera camera;
 
@@ -109,10 +114,10 @@ public class StageManager : MonoBehaviour
         // ESC || ゴールしたら
         Vector2Int playerIndex = GetPlayerIndex();
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Gamepad.current.startButton.isPressed)
         {
             MainManagerScript.stageSelect = 0;
-            SceneManager.LoadScene("SelectScene");
+            SceneManager.LoadScene("TitleScene");
         }
 
         // リセット
@@ -316,7 +321,7 @@ public class StageManager : MonoBehaviour
     {
         if (!isMove && !isFailMove)
         {
-            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D) || Gamepad.current.dpad.right.isPressed)
             {
                 Vector2Int playerIndex = GetPlayerIndex();
                 Vector2Int move = new(1, 0);
@@ -334,7 +339,7 @@ public class StageManager : MonoBehaviour
                 MoveObject("Player", playerIndex, playerIndex + move);
             }
 
-            else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+            else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A) || Gamepad.current.dpad.left.isPressed)
             {
                 Vector2Int playerIndex = GetPlayerIndex();
                 Vector2Int move = new(1, 0);
@@ -352,7 +357,7 @@ public class StageManager : MonoBehaviour
                 MoveObject("Player", playerIndex, playerIndex - move);
             }
 
-            else if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
+            else if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) || Gamepad.current.dpad.up.isPressed)
             {
 
                 Vector2Int playerIndex = GetPlayerIndex();
@@ -361,7 +366,7 @@ public class StageManager : MonoBehaviour
                 MoveObject("Player", playerIndex, playerIndex - move);
             }
 
-            else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+            else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S) || Gamepad.current.dpad.down.isPressed)
             {
 
                 Vector2Int playerIndex = GetPlayerIndex();
@@ -370,10 +375,14 @@ public class StageManager : MonoBehaviour
                 MoveObject("Player", playerIndex, playerIndex + move);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if ((Input.GetKeyDown(KeyCode.Space) || Gamepad.current.buttonSouth.isPressed ) && !preIsPressed)
             {
+                preIsPressed = true;
                 Power();
                 FloorElectrification();
+            }else if (!Gamepad.current.buttonSouth.isPressed)
+            {
+                preIsPressed = false;
             }
         }
         else if (isMove)
@@ -646,6 +655,7 @@ public class StageManager : MonoBehaviour
                                 {
                                     if (CheckBetween(x1, y3))
                                     {
+                                        blockElectroEffect_ = Instantiate(BlockElectroPrefab, new Vector3(x1, field.GetLength(0) - y3, 0), Quaternion.identity);
                                         isExisting_ = true;
                                         break;
                                     }
@@ -658,6 +668,7 @@ public class StageManager : MonoBehaviour
                                 {
                                     if (CheckBetween(x1, y3))
                                     {
+                                        blockElectroEffect_ = Instantiate(BlockElectroPrefab, new Vector3(x1, field.GetLength(0) - y3, 0), Quaternion.identity);
                                         isExisting_ = true;
                                         break;
                                     }
@@ -725,6 +736,7 @@ public class StageManager : MonoBehaviour
                                 {
                                     if (CheckBetween(x3, y1))
                                     {
+                                        blockElectroEffect_ = Instantiate(BlockElectroPrefab, new Vector3(x3, field.GetLength(0) - y1, 0), Quaternion.identity);
                                         isExisting_ = true;
                                         break;
                                     }
@@ -737,6 +749,7 @@ public class StageManager : MonoBehaviour
                                 {
                                     if (CheckBetween(x3, y1))
                                     {
+                                        blockElectroEffect_ = Instantiate(BlockElectroPrefab, new Vector3(x3, field.GetLength(0) - y1, 0), Quaternion.identity);
                                         isExisting_ = true;
                                         break;
                                     }
@@ -837,6 +850,7 @@ public class StageManager : MonoBehaviour
 
     private bool CheckBetween(int x, int y)
     {
+
         if (field[y, x] != null && field[y, x].tag == "Wall")
         {
             return true;
